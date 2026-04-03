@@ -17,7 +17,7 @@
             background-attachment: fixed;
         }
 
-        /* 글래스모피즘 효과 */
+        /* 글래스모피즘 효과 적용 */
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px);
@@ -49,12 +49,12 @@
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
         }
 
-        /* 프로그레스 바 애니메이션 */
+        /* 프로그레스 바 상단 고정 애니메이션 */
         #progress-fill {
             transition: width 0.4s ease;
         }
 
-        /* 결과 카드 스타일 */
+        /* 결과 카드 스타일 (세로형 모바일 최적화) */
         .result-group-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
@@ -70,14 +70,14 @@
         }
         .sub-item-row:last-child { border-bottom: none; }
 
-        /* 한국인 평균 섹션 스타일링 */
+        /* 한국인 평균 섹션 컬러 가이드 반영 */
         .avg-card-1 { border-left: 4px solid #48bb78; background: rgba(72, 187, 120, 0.05); }
         .avg-card-2 { border-left: 4px solid #a0522d; background: rgba(160, 82, 45, 0.05); }
         .avg-card-3 { border-left: 4px solid #d53f8c; background: rgba(213, 63, 140, 0.05); }
         .avg-label { font-weight: bold; font-size: 0.9rem; padding: 4px 10px; border-radius: 6px; display: inline-block; }
         .avg-score-num { font-size: 1.6rem; font-weight: 800; color: #f6e05e; }
 
-        /* 페이드인 애니메이션 */
+        /* 화면 전환 페이드인 애니메이션 */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -130,6 +130,7 @@
             </div>
 
             <div class="grid grid-cols-1 gap-3 pt-4">
+                <!-- 5점 척도 버튼 -->
                 <button onclick="handleAnswer(1)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
                     <span class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center mr-4 text-xs">1</span>
                     전혀 그렇지 않다
@@ -166,23 +167,23 @@
                 <p class="text-slate-400 mt-2">회복탄력성 지수(KRQ-53) 분석 데이터</p>
             </div>
 
-            <!-- 항목별 상세 점수 (세로 카드형) -->
+            <!-- 항목별 상세 점수 카드 섹션 -->
             <div class="space-y-6">
                 <h3 class="text-xl font-bold border-l-4 border-indigo-500 pl-3">항목별 상세 점수</h3>
                 <div id="result-detail-container" class="space-y-6">
-                    <!-- JS에서 렌더링 -->
+                    <!-- JavaScript로 결과 렌더링 -->
                 </div>
             </div>
 
-            <!-- 한국인 평균 데이터 섹션 (세로 배치) -->
+            <!-- 한국인 평균 데이터 섹션 (텍스트 왼쪽 정렬 수정) -->
             <div class="space-y-6 pt-10 border-t border-white/10">
-                <div class="text-center">
+                <div class="text-left pl-1"> <!-- 왼쪽 정렬 및 여백 수정 -->
                     <h3 class="text-2xl font-bold text-white">회복탄력성 한국인 평균 비교</h3>
-                    <p class="text-slate-400 text-sm mt-1">인생의 허들 잘 넘고 계신가요? 한국인 평균 결과치와 비교해보세요.</p>
+                    <p class="text-slate-400 text-sm mt-1 leading-relaxed">인생의 허들 잘 넘고 계신가요? 한국인 평균 결과치와 비교해보세요.</p>
                 </div>
 
                 <div class="space-y-4">
-                    <!-- 자기조절 능력 -->
+                    <!-- 자기조절 능력 평균 데이터 -->
                     <div class="p-6 rounded-2xl avg-card-1">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="flex-1">
@@ -203,7 +204,7 @@
                         </div>
                     </div>
 
-                    <!-- 대인관계 소통능력 -->
+                    <!-- 대인관계 소통능력 평균 데이터 -->
                     <div class="p-6 rounded-2xl avg-card-2">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="flex-1">
@@ -224,7 +225,7 @@
                         </div>
                     </div>
 
-                    <!-- 자기 긍정성 -->
+                    <!-- 자기 긍정성 평균 데이터 -->
                     <div class="p-6 rounded-2xl avg-card-3">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="flex-1">
@@ -257,14 +258,14 @@
             </div>
         </div>
 
-        <!-- 푸터 -->
+        <!-- 하단 카피라이트 -->
         <div class="mt-10 pt-6 border-t border-white/10 text-center no-print">
             <p class="text-slate-600 text-[10px] tracking-widest uppercase font-medium">Copyright 2026 Learn and Insight All Rights Reserved.</p>
         </div>
     </div>
 
     <script>
-        // 53개 문항 데이터 (R: 역채점)
+        // KRQ-53 문항 데이터 및 역채점 플래그
         const questions = [
             { id: 1, text: "나는 어려운 일이 닥쳤을 때 감정을 통제할 수 있다.", reverse: false },
             { id: 2, text: "내가 무슨 생각을 하면, 그 생각이 내 기분에 어떤 영향을 미칠지 잘 알아챈다.", reverse: false },
@@ -324,12 +325,14 @@
         let currentIdx = 0;
         let answers = Array(53).fill(null);
 
+        // 앱 시작 함수
         function startApp() {
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('question-screen').classList.remove('hidden');
             updateQuestion();
         }
 
+        // 문항 업데이트 및 UI 렌더링
         function updateQuestion() {
             const q = questions[currentIdx];
             document.getElementById('question-text').innerText = q.text;
@@ -350,6 +353,7 @@
             });
         }
 
+        // 답변 처리 및 다음 문항 이동
         function handleAnswer(score) {
             answers[currentIdx] = score;
             
@@ -363,6 +367,7 @@
             }
         }
 
+        // 이전 문항 이동
         function prevQuestion() {
             if (currentIdx > 0) {
                 currentIdx--;
@@ -370,12 +375,14 @@
             }
         }
 
+        // 결과 화면 노출
         function showResults() {
             document.getElementById('question-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             renderResultDetail();
         }
 
+        // 개별 문항 채점 로직 (역채점 포함)
         function calculateScore(qIdx, originalScore) {
             if (questions[qIdx].reverse) {
                 return 6 - originalScore;
@@ -383,6 +390,7 @@
             return originalScore;
         }
 
+        // 결과 상세 데이터 렌더링 (카드형 리스트)
         function renderResultDetail() {
             const container = document.getElementById('result-detail-container');
             
@@ -394,8 +402,7 @@
                         { name: "충동통제력", range: [7, 12] },
                         { name: "원인 분석력", range: [13, 18] }
                     ],
-                    totalRange: [1, 18],
-                    color: "indigo"
+                    totalRange: [1, 18]
                 },
                 {
                     name: "대인관계 능력",
@@ -404,18 +411,16 @@
                         { name: "공감능력", range: [25, 30] },
                         { name: "자아확장력", range: [31, 36] }
                     ],
-                    totalRange: [19, 36],
-                    color: "orange"
+                    totalRange: [19, 36]
                 },
                 {
-                    name: "자기 긍정성",
+                    name: "자기 긍정성", // '자기 긍정성'으로 명칭 통일
                     items: [
                         { name: "자아낙관성", range: [37, 42] },
                         { name: "생활만족도", range: [43, 47] },
                         { name: "감사태도", range: [48, 53] }
                     ],
-                    totalRange: [37, 53],
-                    color: "pink"
+                    totalRange: [37, 53]
                 }
             ];
 
@@ -432,7 +437,7 @@
                     <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3">
                         <h4 class="text-lg font-bold text-white">${cat.name}</h4>
                         <div class="text-right">
-                            <span class="text-xs text-slate-400 block">합계 점수</span>
+                            <span class="text-xs text-slate-400 block">영역 합계</span>
                             <span class="text-2xl font-black text-indigo-400">${catTotal}점</span>
                         </div>
                     </div>
@@ -458,7 +463,6 @@
 
                 html += `
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-3 italic"><i class="fas fa-info-circle mr-1"></i> ${cat.totalRange[0]}~${cat.totalRange[1]}번 문항의 합계치입니다.</p>
                 </div>
                 `;
             });
@@ -466,6 +470,7 @@
             container.innerHTML = html;
         }
 
+        // PDF 인쇄 함수
         function printResult() {
             window.print();
         }
