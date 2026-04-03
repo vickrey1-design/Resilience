@@ -86,11 +86,18 @@
             animation: fadeIn 0.5s ease forwards;
         }
 
+        /* 인쇄 시 스타일 최적화 */
         @media print {
-            body { background: white; color: black; }
-            .glass-card { background: white; color: black; border: 1px solid #ccc; box-shadow: none; }
-            .gradient-text { -webkit-text-fill-color: black; }
-            .no-print { display: none; }
+            @page { margin: 1cm; }
+            body { background: white !important; color: black !important; }
+            .glass-card { background: white !important; color: black !important; border: 1px solid #eee !important; box-shadow: none !important; backdrop-filter: none !important; }
+            .gradient-text { -webkit-text-fill-color: black !important; background: none !important; }
+            .no-print { display: none !important; }
+            .result-group-card { background: #f9f9f9 !important; border: 1px solid #ddd !important; break-inside: avoid; }
+            .sub-item-row { border-bottom: 1px solid #eee !important; }
+            .avg-card-1, .avg-card-2, .avg-card-3 { background: #fdfdfd !important; border: 1px solid #eee !important; border-left-width: 6px !important; break-inside: avoid; }
+            .avg-score-num { color: #2d3748 !important; }
+            .text-slate-400, .text-slate-300, .text-slate-500 { color: #4a5568 !important; }
         }
     </style>
 </head>
@@ -110,7 +117,7 @@
                 <p class="mb-2"><i class="fas fa-clock mr-2 text-indigo-400"></i>소요 시간은 <strong>7분 내외</strong>입니다.</p>
                 <p><i class="fas fa-check-circle mr-2 text-indigo-400"></i>솔직하고 직관적인 답변이 가장 정확한 결과를 보여줍니다.</p>
             </div>
-            <button onclick="startApp()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-500/20">
+            <button type="button" onclick="startApp()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-500/20">
                 진단 시작하기 <i class="fas fa-arrow-right ml-2"></i>
             </button>
         </div>
@@ -130,31 +137,30 @@
             </div>
 
             <div class="grid grid-cols-1 gap-3 pt-4">
-                <!-- 5점 척도 버튼 -->
-                <button onclick="handleAnswer(1)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
+                <button type="button" onclick="handleAnswer(1)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
                     <span class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center mr-4 text-xs">1</span>
                     전혀 그렇지 않다
                 </button>
-                <button onclick="handleAnswer(2)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
+                <button type="button" onclick="handleAnswer(2)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
                     <span class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center mr-4 text-xs">2</span>
                     그렇지 않다
                 </button>
-                <button onclick="handleAnswer(3)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
+                <button type="button" onclick="handleAnswer(3)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
                     <span class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center mr-4 text-xs">3</span>
                     보통이다
                 </button>
-                <button onclick="handleAnswer(4)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
+                <button type="button" onclick="handleAnswer(4)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
                     <span class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center mr-4 text-xs">4</span>
                     어느 정도 그렇다
                 </button>
-                <button onclick="handleAnswer(5)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
+                <button type="button" onclick="handleAnswer(5)" class="option-button p-4 rounded-xl border border-slate-700 text-left flex items-center">
                     <span class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center mr-4 text-xs">5</span>
                     매우 그렇다
                 </button>
             </div>
 
             <div class="flex justify-between pt-6">
-                <button id="prev-btn" onclick="prevQuestion()" class="text-slate-500 hover:text-indigo-400 disabled:opacity-0 transition-colors">
+                <button type="button" id="prev-btn" onclick="prevQuestion()" class="text-slate-500 hover:text-indigo-400 disabled:opacity-0 transition-colors">
                     <i class="fas fa-chevron-left mr-1"></i> 이전 문항
                 </button>
             </div>
@@ -167,23 +173,22 @@
                 <p class="text-slate-400 mt-2">회복탄력성 지수(KRQ-53) 분석 데이터</p>
             </div>
 
-            <!-- 항목별 상세 점수 카드 섹션 -->
+            <!-- 항목별 상세 점수 -->
             <div class="space-y-6">
                 <h3 class="text-xl font-bold border-l-4 border-indigo-500 pl-3">항목별 상세 점수</h3>
                 <div id="result-detail-container" class="space-y-6">
-                    <!-- JavaScript로 결과 렌더링 -->
+                    <!-- JS에서 렌더링 -->
                 </div>
             </div>
 
-            <!-- 한국인 평균 데이터 섹션 (텍스트 왼쪽 정렬 수정) -->
+            <!-- 한국인 평균 데이터 섹션 -->
             <div class="space-y-6 pt-10 border-t border-white/10">
-                <div class="text-left pl-1"> <!-- 왼쪽 정렬 및 여백 수정 -->
+                <div class="text-left pl-1">
                     <h3 class="text-2xl font-bold text-white">회복탄력성 한국인 평균 비교</h3>
                     <p class="text-slate-400 text-sm mt-1 leading-relaxed">인생의 허들 잘 넘고 계신가요? 한국인 평균 결과치와 비교해보세요.</p>
                 </div>
 
                 <div class="space-y-4">
-                    <!-- 자기조절 능력 평균 데이터 -->
                     <div class="p-6 rounded-2xl avg-card-1">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="flex-1">
@@ -204,7 +209,6 @@
                         </div>
                     </div>
 
-                    <!-- 대인관계 소통능력 평균 데이터 -->
                     <div class="p-6 rounded-2xl avg-card-2">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="flex-1">
@@ -225,7 +229,6 @@
                         </div>
                     </div>
 
-                    <!-- 자기 긍정성 평균 데이터 -->
                     <div class="p-6 rounded-2xl avg-card-3">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="flex-1">
@@ -249,23 +252,26 @@
             </div>
 
             <div class="flex flex-col md:flex-row gap-4 pt-6 no-print">
-                <button onclick="location.reload()" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all">
+                <button type="button" onclick="location.reload()" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all">
                     다시 진단하기
                 </button>
-                <button onclick="printResult()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/20">
+                <button type="button" onclick="printResult()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/20">
                     PDF로 결과 저장 / 인쇄
                 </button>
             </div>
         </div>
 
-        <!-- 하단 카피라이트 -->
+        <!-- 하단 카피라이트 (요청에 따라 세 줄로 변경) -->
         <div class="mt-10 pt-6 border-t border-white/10 text-center no-print">
-            <p class="text-slate-600 text-[10px] tracking-widest uppercase font-medium">Copyright 2026 Learn and Insight All Rights Reserved.</p>
+            <p class="text-slate-600 text-[10px] tracking-widest uppercase font-medium leading-relaxed">
+                COPYRIGHT<br>
+                2026 LEARN & INSIGHT<br>
+                ALL RIGHTS RESERVED
+            </p>
         </div>
     </div>
 
     <script>
-        // KRQ-53 문항 데이터 및 역채점 플래그
         const questions = [
             { id: 1, text: "나는 어려운 일이 닥쳤을 때 감정을 통제할 수 있다.", reverse: false },
             { id: 2, text: "내가 무슨 생각을 하면, 그 생각이 내 기분에 어떤 영향을 미칠지 잘 알아챈다.", reverse: false },
@@ -325,14 +331,12 @@
         let currentIdx = 0;
         let answers = Array(53).fill(null);
 
-        // 앱 시작 함수
         function startApp() {
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('question-screen').classList.remove('hidden');
             updateQuestion();
         }
 
-        // 문항 업데이트 및 UI 렌더링
         function updateQuestion() {
             const q = questions[currentIdx];
             document.getElementById('question-text').innerText = q.text;
@@ -353,21 +357,18 @@
             });
         }
 
-        // 답변 처리 및 다음 문항 이동
         function handleAnswer(score) {
             answers[currentIdx] = score;
-            
             if (currentIdx < 52) {
                 setTimeout(() => {
                     currentIdx++;
                     updateQuestion();
-                }, 200);
+                }, 150);
             } else {
                 showResults();
             }
         }
 
-        // 이전 문항 이동
         function prevQuestion() {
             if (currentIdx > 0) {
                 currentIdx--;
@@ -375,62 +376,30 @@
             }
         }
 
-        // 결과 화면 노출
         function showResults() {
             document.getElementById('question-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             renderResultDetail();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 개별 문항 채점 로직 (역채점 포함)
         function calculateScore(qIdx, originalScore) {
-            if (questions[qIdx].reverse) {
-                return 6 - originalScore;
-            }
+            if (questions[qIdx].reverse) return 6 - originalScore;
             return originalScore;
         }
 
-        // 결과 상세 데이터 렌더링 (카드형 리스트)
         function renderResultDetail() {
             const container = document.getElementById('result-detail-container');
-            
             const categories = [
-                {
-                    name: "자기 조절 능력",
-                    items: [
-                        { name: "감정 조절력", range: [1, 6] },
-                        { name: "충동통제력", range: [7, 12] },
-                        { name: "원인 분석력", range: [13, 18] }
-                    ],
-                    totalRange: [1, 18]
-                },
-                {
-                    name: "대인관계 능력",
-                    items: [
-                        { name: "소통능력", range: [19, 24] },
-                        { name: "공감능력", range: [25, 30] },
-                        { name: "자아확장력", range: [31, 36] }
-                    ],
-                    totalRange: [19, 36]
-                },
-                {
-                    name: "자기 긍정성", // '자기 긍정성'으로 명칭 통일
-                    items: [
-                        { name: "자아낙관성", range: [37, 42] },
-                        { name: "생활만족도", range: [43, 47] },
-                        { name: "감사태도", range: [48, 53] }
-                    ],
-                    totalRange: [37, 53]
-                }
+                { name: "자기 조절 능력", items: [{ name: "감정 조절력", range: [1, 6] }, { name: "충동통제력", range: [7, 12] }, { name: "원인 분석력", range: [13, 18] }], totalRange: [1, 18] },
+                { name: "대인관계 능력", items: [{ name: "소통능력", range: [19, 24] }, { name: "공감능력", range: [25, 30] }, { name: "자아확장력", range: [31, 36] }], totalRange: [19, 36] },
+                { name: "자기 긍정성", items: [{ name: "자아낙관성", range: [37, 42] }, { name: "생활만족도", range: [43, 47] }, { name: "감사태도", range: [48, 53] }], totalRange: [37, 53] }
             ];
 
             let html = "";
-
             categories.forEach(cat => {
                 let catTotal = 0;
-                for(let i = cat.totalRange[0]-1; i < cat.totalRange[1]; i++) {
-                    catTotal += calculateScore(i, answers[i]);
-                }
+                for(let i = cat.totalRange[0]-1; i < cat.totalRange[1]; i++) catTotal += calculateScore(i, answers[i]);
 
                 html += `
                 <div class="result-group-card animate-fade-in">
@@ -443,36 +412,31 @@
                     </div>
                     <div class="space-y-1">
                 `;
-
                 cat.items.forEach(sub => {
                     let subTotal = 0;
-                    for (let i = sub.range[0] - 1; i < sub.range[1]; i++) {
-                        subTotal += calculateScore(i, answers[i]);
-                    }
-
-                    html += `
-                        <div class="sub-item-row">
-                            <div>
-                                <span class="text-slate-200 font-medium">${sub.name}</span>
-                                <span class="text-[10px] text-slate-500 ml-2">(${sub.range[0]}~${sub.range[1]}번)</span>
-                            </div>
-                            <div class="font-bold text-slate-100">${subTotal}점</div>
-                        </div>
-                    `;
+                    for (let i = sub.range[0] - 1; i < sub.range[1]; i++) subTotal += calculateScore(i, answers[i]);
+                    html += `<div class="sub-item-row"><div><span class="text-slate-200 font-medium">${sub.name}</span><span class="text-[10px] text-slate-500 ml-2">(${sub.range[0]}~${sub.range[1]}번)</span></div><div class="font-bold text-slate-100">${subTotal}점</div></div>`;
                 });
-
-                html += `
-                    </div>
-                </div>
-                `;
+                html += `</div></div>`;
             });
-
             container.innerHTML = html;
         }
 
-        // PDF 인쇄 함수
+        // 인쇄 함수 보강
         function printResult() {
-            window.print();
+            try {
+                if (window.print) {
+                    window.print();
+                } else {
+                    throw new Error("Print not supported");
+                }
+            } catch (e) {
+                console.error("인쇄 시도 중 오류 발생:", e);
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (isMobile) {
+                    alert("인쇄 기능이 현재 브라우저에서 지원되지 않습니다. 우측 상단의 점 세 개(⋮) 메뉴를 눌러 '다른 브라우저로 열기'를 선택한 후 다시 시도해 주세요.");
+                }
+            }
         }
     </script>
 </body>
